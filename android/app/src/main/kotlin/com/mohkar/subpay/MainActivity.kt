@@ -1,4 +1,4 @@
-package com.example.subpay
+package com.mohkar.subpay
 
 import io.flutter.embedding.android.FlutterActivity
 
