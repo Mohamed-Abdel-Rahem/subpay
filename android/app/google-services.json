@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "652833418777",
+    "project_id": "subpay-9514c",
+    "storage_bucket": "subpay-9514c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652833418777:android:e02941edcf0b4d5f5a4488",
+        "android_client_info": {
+          "package_name": "com.mohkar.subpay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC26qSakV7S6nXnqBfo_5bffqqtFcvvH2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
