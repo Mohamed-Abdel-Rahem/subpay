@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:subpay/generated/l10n.dart';
 import 'package:subpay/screens/homePage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,10 +41,7 @@ class SubPayApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: false),
       home: const HomePage(),
     );
   }
