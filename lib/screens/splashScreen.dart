@@ -15,8 +15,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
-    // بعد 4 ثواني، انتقل إلى الصفحة التالية
     Timer(const Duration(seconds: 4), () {
       Navigator.pushReplacementNamed(context, HomePage.id);
     });
@@ -24,12 +22,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the size of the screen
+    final size = MediaQuery.of(context).size;
+
+    final screenWidth = size.width;
+
     return Scaffold(
-      backgroundColor: const Color(0xff140165), // لون الخلفية
+      backgroundColor: const Color(0xff140165),
       body: Center(
         child: CustomText(
           text: 'SubPay',
-          fontSize: 40,
+          fontSize: screenWidth * 0.1,
           fontWeight: FontWeight.bold,
         ),
       ),
