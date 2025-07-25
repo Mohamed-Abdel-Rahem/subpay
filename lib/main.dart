@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:subpay/generated/l10n.dart';
 import 'package:subpay/screens/homePage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:subpay/screens/splashScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,13 +13,14 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  String initialRoute = SplashScreen.id;
   try {
     await Firebase.initializeApp();
     runApp(
       DevicePreview(
         enabled: true,
         tools: const [...DevicePreview.defaultTools],
-        builder: (context) => const SubPayApp(),
+        builder: (context) => SubPayApp(initialRoute: initialRoute),
       ),
     );
   } catch (e) {
@@ -27,7 +29,9 @@ void main() async {
 }
 
 class SubPayApp extends StatelessWidget {
-  const SubPayApp({super.key});
+  final String initialRoute;
+
+  const SubPayApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,11 @@ class SubPayApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: false),
-      home: const HomePage(),
+      initialRoute: initialRoute,
+      routes: {
+        SplashScreen.id: (context) => const SplashScreen(),
+        HomePage.id: (context) => const HomePage(),
+      },
     );
   }
 }
