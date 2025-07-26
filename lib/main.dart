@@ -2,10 +2,12 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:subpay/auth/screens/loginScreen.dart';
+import 'package:subpay/auth/screens/registerScreen.dart';
 import 'package:subpay/generated/l10n.dart';
-import 'package:subpay/screens/homePage.dart';
+import 'package:subpay/auth/screens/homePage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:subpay/screens/splashScreen.dart';
+import 'package:subpay/auth/screens/splashScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +52,8 @@ class SubPayApp extends StatelessWidget {
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         HomePage.id: (context) => const HomePage(),
+        RegisterScreen.id: (context) => const RegisterScreen(),
+        LoginScreen.id: (context) => const LoginScreen(),
       },
     );
   }
