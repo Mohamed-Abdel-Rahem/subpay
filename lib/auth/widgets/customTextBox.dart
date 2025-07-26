@@ -4,11 +4,16 @@ class CustomInputField extends StatefulWidget {
   final String label;
   final String hint;
   final bool isPassword;
-
+  final TextEditingController? data; // Optional controller
+  final Function(String)? onChanged;
+  final String? Function(String?)? validator; // Nullable validator
   const CustomInputField({
     super.key,
     required this.label,
     required this.hint,
+    this.data, // Optional controller
+    this.onChanged,
+    this.validator, // Validator function
     this.isPassword = false,
   });
 
@@ -17,12 +22,24 @@ class CustomInputField extends StatefulWidget {
 }
 
 class _CustomInputFieldState extends State<CustomInputField> {
+  TextEditingController? _internalController;
   bool _obscureText = true;
 
   @override
+  @override
   void initState() {
     super.initState();
-    _obscureText = widget.isPassword;
+    // Use the provided controller or create an internal one
+    _internalController = widget.data ?? TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // Dispose only if we created the controller internally
+    if (widget.data == null) {
+      _internalController?.dispose();
+    }
+    super.dispose();
   }
 
   @override
@@ -63,6 +80,11 @@ class _CustomInputFieldState extends State<CustomInputField> {
               ],
             ),
             child: TextFormField(
+              controller: _internalController,
+              validator: widget.validator, // Use the provided validator
+              onChanged: (value) {
+                widget.onChanged?.call(value); // Call onChanged if provided
+              },
               obscureText: widget.isPassword ? _obscureText : false,
               textDirection: TextDirection.rtl,
               decoration: InputDecoration(

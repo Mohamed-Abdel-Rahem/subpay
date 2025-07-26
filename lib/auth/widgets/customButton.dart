@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.text});
+  const CustomButton({super.key, required this.text, this.onPressed});
   final String text;
+  final Function? onPressed;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -13,7 +14,7 @@ class CustomButton extends StatelessWidget {
         vertical: screenHeight * 0.02,
       ),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed as void Function()?,
         child: Text(
           text,
           style: TextStyle(
