@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:subpay/auth/screens/loginScreen.dart';
 import 'package:subpay/auth/widgets/customButton.dart';
 import 'package:subpay/auth/widgets/customText.dart';
 import 'package:subpay/auth/widgets/customTextBox.dart';
@@ -86,7 +87,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     fontWeight: FontWeight.w500,
                     color: Colors.grey,
                   ),
-                  CustomTextButton(text: 'تسجيل الدخول'),
+                  CustomTextButton(
+                    text: 'تسجيل الدخول',
+                    color: Colors.blue,
+                    onPressed: () {
+                      Navigator.pushNamed(context, LoginScreen.id);
+                    },
+                  ),
                 ],
               ),
             ],
