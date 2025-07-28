@@ -1,4 +1,3 @@
-// ✅ Updated FirebaseServices with correct UID and error handling
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,7 +21,10 @@ class FirebaseServices {
         password: password,
       );
 
-      String uid = credential.user!.uid; // ✅ Use UID instead of email
+      // ✅ إرسال رابط التفعيل أول مرة
+      await credential.user!.sendEmailVerification();
+
+      String uid = credential.user!.uid;
 
       await addUserToFirestore(
         uid: uid,
@@ -31,7 +33,12 @@ class FirebaseServices {
         username: username,
       );
 
-      context.showSnack(message: 'تم إنشاء الحساب بنجاح.');
+      context.showSnack(
+        message:
+            'تم إنشاء الحساب. يُرجى تفعيل البريد الإلكتروني قبل تسجيل الدخول.',
+      );
+
+      await _auth.signOut();
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -66,14 +73,30 @@ class FirebaseServices {
     }
   }
 
-  static Future<void> loginUsers({
+  static Future<UserCredential?> loginUsers({
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      final credential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await credential.user!.reload();
+      final refreshedUser = _auth.currentUser;
+
+      if (!refreshedUser!.emailVerified) {
+        context.showSnack(
+          message: 'يرجى تفعيل البريد الإلكتروني قبل تسجيل الدخول.',
+        );
+
+        return credential; // ✅ نرجع UserCredential لإعادة استخدامه
+      }
+
       Navigator.pushNamed(context, HomePage.id);
+      return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         context.showSnack(message: 'لا يوجد مستخدم بهذا البريد.');
@@ -82,6 +105,27 @@ class FirebaseServices {
       } else {
         context.showSnack(message: 'فشل تسجيل الدخول: ${e.message}');
       }
+      return null;
+    }
+  }
+
+  /// ✅ دالة لإعادة إرسال رابط التفعيل إذا لم يتم التفعيل
+  static Future<void> resendVerificationEmail(BuildContext context) async {
+    try {
+      User? user = _auth.currentUser;
+      await user?.reload(); // مهم جداً لتحديث الحالة
+
+      user = _auth.currentUser;
+
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+
+        context.showSnack(message: 'تم إرسال رابط التفعيل مجددًا إلى بريدك.');
+      } else {
+        context.showSnack(message: 'البريد مفعل بالفعل أو لا يوجد مستخدم.');
+      }
+    } catch (e) {
+      context.showSnack(message: 'فشل في إرسال رابط التفعيل: ${e.toString()}');
     }
   }
 
