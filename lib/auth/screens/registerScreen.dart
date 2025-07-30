@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:subpay/auth/firebase/firebaseServicesAuth.dart';
+import 'package:subpay/auth/screens/homePage.dart';
 import 'package:subpay/auth/screens/loginScreen.dart';
 import 'package:subpay/auth/widgets/customButton.dart';
 import 'package:subpay/auth/widgets/customText.dart';
@@ -180,8 +181,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
 
                   IconButton(
-                    onPressed: () {
-                      // Google sign-in هنا
+                    onPressed: () async {
+                      setState(() => isLoading = true);
+
+                      bool success = await FirebaseServices.signInWithGoogle(
+                        context,
+                      );
+
+                      setState(() => isLoading = false);
+
+                      if (success) {
+                        Navigator.pushNamed(context, HomePage.id);
+                      }
                     },
                     icon: Image.asset('assets/icons/google_icon.png'),
                   ),

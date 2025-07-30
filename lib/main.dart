@@ -2,8 +2,11 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:subpay/auth/screens/forgetPasswordPage.dart';
 import 'package:subpay/auth/screens/loginScreen.dart';
 import 'package:subpay/auth/screens/registerScreen.dart';
+import 'package:subpay/core/enterCodeRoom.dart';
+import 'package:subpay/core/generateCode.dart';
 import 'package:subpay/generated/l10n.dart';
 import 'package:subpay/auth/screens/homePage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -54,6 +57,9 @@ class SubPayApp extends StatelessWidget {
         HomePage.id: (context) => const HomePage(),
         RegisterScreen.id: (context) => const RegisterScreen(),
         LoginScreen.id: (context) => const LoginScreen(),
+        ForgetPassword.id: (context) => const ForgetPassword(),
+        GenerateCode.id: (context) => const GenerateCode(),
+        EnterCodeRoom.id: (context) => const EnterCodeRoom(),
       },
     );
   }

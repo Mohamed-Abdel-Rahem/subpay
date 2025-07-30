@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:subpay/auth/firebase/firebaseServicesAuth.dart';
+import 'package:subpay/auth/screens/forgetPasswordPage.dart';
+import 'package:subpay/auth/screens/homePage.dart';
 import 'package:subpay/auth/screens/registerScreen.dart';
 import 'package:subpay/auth/widgets/customButton.dart';
 import 'package:subpay/auth/widgets/customText.dart';
@@ -38,12 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: screenHeight * 0.02),
-                  Text(
-                    'تسجيل الدخول',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.06,
-                      fontWeight: FontWeight.w600,
-                    ),
+
+                  CustomText(
+                    text: 'تسجيل الدخول',
+                    fontSize: screenWidth * 0.06,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
                   SizedBox(height: screenHeight * 0.04),
 
@@ -86,7 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: CustomTextButton(
                           text: 'نسيت كلمة المرور؟',
                           color: Colors.grey,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, ForgetPassword.id);
+                          },
                         ),
                       ),
                     ],
@@ -119,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
 
-                  if (showResendButton)
+                  if (showResendButton && !email!.endsWith('@subpay.com'))
                     AnimatedOpacity(
                       opacity: 1,
                       duration: const Duration(milliseconds: 500),
@@ -208,8 +211,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
 
                   IconButton(
-                    onPressed: () {
-                      // تسجيل الدخول بجوجل
+                    onPressed: () async {
+                      setState(() => isLoading = true);
+
+                      bool success = await FirebaseServices.signInWithGoogle(
+                        context,
+                      );
+
+                      setState(() => isLoading = false);
+
+                      if (success) {
+                        Navigator.pushNamed(context, HomePage.id);
+                      }
                     },
                     icon: Image.asset('assets/icons/google_icon.png'),
                   ),
