@@ -6,7 +6,7 @@ import 'package:subpay/auth/screens/forgetPasswordPage.dart';
 import 'package:subpay/auth/screens/loginScreen.dart';
 import 'package:subpay/auth/screens/registerScreen.dart';
 import 'package:subpay/core/enterCodeRoom.dart';
-import 'package:subpay/core/generateCode.dart';
+import 'package:subpay/core/mainScreenAdmin.dart';
 import 'package:subpay/generated/l10n.dart';
 import 'package:subpay/auth/screens/homePage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,7 +18,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  String initialRoute = SplashScreen.id;
+  String initialRoute = MainScreenAdmin.id;
   try {
     await Firebase.initializeApp();
     runApp(
@@ -58,7 +58,7 @@ class SubPayApp extends StatelessWidget {
         RegisterScreen.id: (context) => const RegisterScreen(),
         LoginScreen.id: (context) => const LoginScreen(),
         ForgetPassword.id: (context) => const ForgetPassword(),
-        GenerateCode.id: (context) => const GenerateCode(),
+        MainScreenAdmin.id: (context) => const MainScreenAdmin(),
         EnterCodeRoom.id: (context) => const EnterCodeRoom(),
       },
     );
