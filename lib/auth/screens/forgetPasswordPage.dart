@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:subpay/auth/firebase/firebaseServicesAuth.dart';
-import 'package:subpay/auth/widgets/customButton.dart';
 import 'package:subpay/auth/widgets/customText.dart';
 import 'package:subpay/auth/widgets/customTextBox.dart';
 
