@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:subpay/auth/screens/forgetPasswordPage.dart';
 import 'package:subpay/auth/screens/loginScreen.dart';
 import 'package:subpay/auth/screens/registerScreen.dart';
-import 'package:subpay/core/enterCodeRoom.dart';
-import 'package:subpay/core/mainScreenAdmin.dart';
+import 'package:subpay/core/screens/roomDetails.dart';
+import 'package:subpay/core/users/enterCodeRoom.dart';
+import 'package:subpay/core/screens/mainScreenAdmin.dart';
 import 'package:subpay/generated/l10n.dart';
 import 'package:subpay/auth/screens/homePage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,7 +19,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  String initialRoute = MainScreenAdmin.id;
+  String initialRoute = SplashScreen.id;
   try {
     await Firebase.initializeApp();
     runApp(

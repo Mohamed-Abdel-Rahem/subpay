@@ -8,6 +8,9 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val flutterVersionCode: String = project.findProperty("flutter.versionCode") as String? ?: "1"
+val flutterVersionName: String = project.findProperty("flutter.versionName") as String? ?: "1.0.0"
+
 android {
     namespace = "com.mohkar.subpay"
     compileSdk = flutter.compileSdkVersion
@@ -27,10 +30,10 @@ android {
         applicationId = "com.mohkar.subpay"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        versionCode = flutterVersionCode.toInt()
+        versionName = flutterVersionName
     }
 
     buildTypes {

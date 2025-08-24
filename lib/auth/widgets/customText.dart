@@ -34,6 +34,8 @@ class _CustomTextState extends State<CustomText> {
         children: [
           Text(
             widget.text,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis, // هيحط "..."
             style: TextStyle(
               fontSize: widget.fontSize,
               fontWeight: widget.fontWeight,
