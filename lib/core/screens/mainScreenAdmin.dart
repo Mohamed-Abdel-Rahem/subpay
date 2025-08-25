@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:subpay/auth/firebase/roomRepository%20.dart';
@@ -47,7 +46,7 @@ class _MainScreenAdminState extends State<MainScreenAdmin> {
                   child: Text(
                     'الصفحة الرئيسية',
                     style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.06,
+                      fontSize: screenWidth * 0.06,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -68,7 +67,7 @@ class _MainScreenAdminState extends State<MainScreenAdmin> {
                   }
                   return Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                      horizontal: screenWidth * 0.05,
                     ),
                     child: RoomGrid(snapshot: snapshot.data!),
                   );

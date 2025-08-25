@@ -20,7 +20,6 @@ class RoomController {
   Future<void> createRoom(String name, String imageBase64) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final code = _generateCode();
-
     final room = RoomModel(
       id: '', // Firestore ID auto generated
       name: name,
@@ -28,8 +27,8 @@ class RoomController {
       code: code,
       ownerId: uid,
       members: [uid],
+      createdAt: DateTime.now(),
     );
-
     await _repo.createRoom(room);
   }
 
@@ -38,7 +37,6 @@ class RoomController {
   Future<void> joinRoomByCode(String code, String userId) async {
     final doc = await _repo.getRoomByCode(code);
     if (doc == null) throw Exception("Room not found.");
-
     await _repo.joinRoom(doc.id, userId);
   }
 }

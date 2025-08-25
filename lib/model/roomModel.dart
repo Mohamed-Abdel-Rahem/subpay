@@ -5,7 +5,9 @@ class RoomModel {
   final String code;
   final String ownerId;
   final List<String> members;
-
+  final DateTime createdAt;
+  String email;
+  String password;
   RoomModel({
     required this.id,
     required this.name,
@@ -13,6 +15,9 @@ class RoomModel {
     required this.code,
     required this.ownerId,
     required this.members,
+    required this.createdAt,
+    this.email = '',
+    this.password = '',
   });
 
   Map<String, dynamic> toMap() {
@@ -22,18 +27,19 @@ class RoomModel {
       'code': code,
       'ownerId': ownerId,
       'members': members,
-      'createdAt': DateTime.now(),
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 
   factory RoomModel.fromMap(String id, Map<String, dynamic> map) {
     return RoomModel(
       id: id,
-      name: map['name'],
-      imageBase64: map['image'],
-      code: map['code'],
-      ownerId: map['ownerId'],
-      members: List<String>.from(map['members']),
+      name: map['name'] ?? '',
+      imageBase64: map['image'] ?? '',
+      code: map['code'] ?? '',
+      ownerId: map['ownerId'] ?? '',
+      members: List<String>.from(map['members'] ?? []),
+      createdAt: DateTime.tryParse(map['createdAt'] ?? '') ?? DateTime.now(),
     );
   }
 }

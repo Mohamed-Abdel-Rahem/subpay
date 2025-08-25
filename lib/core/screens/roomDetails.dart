@@ -1,9 +1,7 @@
-// RoomDetails.dart
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:subpay/auth/widgets/codeAndChange.dart';
-import 'dart:math';
-
 import 'package:subpay/auth/widgets/containerCard.dart';
 
 class RoomDetails extends StatefulWidget {
@@ -31,16 +29,39 @@ class _RoomDetailsState extends State<RoomDetails>
 
   final List<String> tabTitles = ['بيانات الرووم', 'المستخدمين'];
 
+  // Controllers for email and password
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: tabTitles.length, vsync: this);
     _currentCode = widget.roomCode;
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+
+    // Load existing email and password
+    FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(widget.roomId)
+        .get()
+        .then((doc) {
+          if (doc.exists) {
+            final data = doc.data() as Map<String, dynamic>;
+            setState(() {
+              emailController.text = data['email'] ?? '';
+              passwordController.text = data['password'] ?? '';
+            });
+          }
+        });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -80,7 +101,7 @@ class _RoomDetailsState extends State<RoomDetails>
         .doc(widget.roomId)
         .delete();
 
-    if (mounted) Navigator.pop(context); // العودة للشاشة السابقة بعد الحذف
+    if (mounted) Navigator.pop(context);
   }
 
   Future<bool> _showConfirmationDialog(String message) async {
@@ -102,6 +123,19 @@ class _RoomDetailsState extends State<RoomDetails>
           ),
         ) ??
         false;
+  }
+
+  Future<void> _saveEmailPassword() async {
+    await FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(widget.roomId)
+        .update({
+          'email': emailController.text.trim(),
+          'password': passwordController.text.trim(),
+        });
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('تم الحفظ بنجاح')));
   }
 
   @override
@@ -129,7 +163,7 @@ class _RoomDetailsState extends State<RoomDetails>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: _deleteRoom, // يظهر confirmation قبل الحذف
+                        onPressed: _deleteRoom,
                         icon: Icon(
                           Icons.delete,
                           color: Colors.redAccent,
@@ -161,14 +195,12 @@ class _RoomDetailsState extends State<RoomDetails>
                 ),
               ),
             ),
-
             TabBar(
               controller: _tabController,
               labelColor: Colors.black,
               labelStyle: TextStyle(fontSize: fontSize * 0.9),
               tabs: tabTitles.map((title) => Tab(text: title)).toList(),
             ),
-
             Expanded(
               child: TabBarView(
                 controller: _tabController,
@@ -179,17 +211,54 @@ class _RoomDetailsState extends State<RoomDetails>
                     children: [
                       CodeRoomChange(
                         textCode: _currentCode,
-                        onEdit:
-                            _regenerateCode, // يظهر confirmation قبل توليد كود جديد
+                        onEdit: _regenerateCode,
                       ),
                       const SizedBox(height: 20),
-                      ContainerCard(
-                        textEmail: 'mohamedar2002mail@gmail.com',
-                        textPassword: 'sdaapp888555',
+                      Directionality(
+                        textDirection:
+                            TextDirection.ltr, // يجعل الحقل من اليسار
+                        child: TextField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            labelStyle: TextStyle(
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: TextField(
+                          controller: passwordController,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            labelStyle: TextStyle(
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: _saveEmailPassword,
+                        child: const Text('حفظ البريد وكلمة المرور'),
                       ),
                     ],
                   ),
-
                   // المستخدمين
                   const Center(child: Text("Users list here...")),
                 ],
