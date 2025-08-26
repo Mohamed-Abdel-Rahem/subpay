@@ -5,9 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:subpay/auth/screens/forgetPasswordPage.dart';
 import 'package:subpay/auth/screens/loginScreen.dart';
 import 'package:subpay/auth/screens/registerScreen.dart';
-import 'package:subpay/core/screens/roomDetails.dart';
+import 'package:subpay/core/users/choosePaymentMethod.dart';
 import 'package:subpay/core/users/enterCodeRoom.dart';
 import 'package:subpay/core/screens/mainScreenAdmin.dart';
+import 'package:subpay/core/users/vodafoneCash.dart';
 import 'package:subpay/generated/l10n.dart';
 import 'package:subpay/auth/screens/homePage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -61,6 +62,8 @@ class SubPayApp extends StatelessWidget {
         ForgetPassword.id: (context) => const ForgetPassword(),
         MainScreenAdmin.id: (context) => const MainScreenAdmin(),
         EnterCodeRoom.id: (context) => const EnterCodeRoom(),
+        ChoosePaymentMethod.id: (context) => const ChoosePaymentMethod(),
+        VodafoneCashPayment.id: (context) => const VodafoneCashPayment(),
       },
     );
   }

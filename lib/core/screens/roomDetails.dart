@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:subpay/auth/widgets/codeAndChange.dart';
-import 'package:subpay/auth/widgets/containerCard.dart';
+import 'package:subpay/utils/extension/contextExtension.dart';
 
 class RoomDetails extends StatefulWidget {
   final String roomId;
@@ -133,9 +133,7 @@ class _RoomDetailsState extends State<RoomDetails>
           'email': emailController.text.trim(),
           'password': passwordController.text.trim(),
         });
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('تم الحفظ بنجاح')));
+    context.showSnack(message: 'تم الحفظ بنجاح');
   }
 
   @override
@@ -150,121 +148,137 @@ class _RoomDetailsState extends State<RoomDetails>
     return Scaffold(
       body: SafeArea(
         top: false,
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: headerHeight,
-              color: const Color(0xff140165),
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: _deleteRoom,
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
-                          size: iconSize,
-                        ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          widget.roomName,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: headerHeight,
+                color: const Color(0xff140165),
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: _deleteRoom,
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.redAccent,
+                            size: iconSize,
                           ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: Image.asset(
-                          'assets/icons/white_arrow_back.png',
-                          width: iconSize,
-                          height: iconSize,
+                        Flexible(
+                          child: Text(
+                            widget.roomName,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: Image.asset(
+                            'assets/icons/white_arrow_back.png',
+                            width: iconSize,
+                            height: iconSize,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            TabBar(
-              controller: _tabController,
-              labelColor: Colors.black,
-              labelStyle: TextStyle(fontSize: fontSize * 0.9),
-              tabs: tabTitles.map((title) => Tab(text: title)).toList(),
-            ),
-            Expanded(
-              child: TabBarView(
+              TabBar(
                 controller: _tabController,
-                children: [
-                  // بيانات الرووم
-                  ListView(
-                    padding: EdgeInsets.all(horizontalPadding),
-                    children: [
-                      CodeRoomChange(
-                        textCode: _currentCode,
-                        onEdit: _regenerateCode,
-                      ),
-                      const SizedBox(height: 20),
-                      Directionality(
-                        textDirection:
-                            TextDirection.ltr, // يجعل الحقل من اليسار
-                        child: TextField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            labelStyle: TextStyle(
-                              color: Colors.grey[700],
-                              fontWeight: FontWeight.w500,
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: TextField(
-                          controller: passwordController,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            labelStyle: TextStyle(
-                              color: Colors.grey[700],
-                              fontWeight: FontWeight.w500,
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _saveEmailPassword,
-                        child: const Text('حفظ البريد وكلمة المرور'),
-                      ),
-                    ],
-                  ),
-                  // المستخدمين
-                  const Center(child: Text("Users list here...")),
-                ],
+                labelColor: Colors.black,
+                labelStyle: TextStyle(fontSize: fontSize * 0.9),
+                tabs: tabTitles.map((title) => Tab(text: title)).toList(),
               ),
-            ),
-          ],
+              SizedBox(
+                height:
+                    screenHeight, // نحدد height للـ TabBarView لتجنب مشاكل Scroll
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(horizontalPadding),
+                      child: Column(
+                        children: [
+                          CodeRoomChange(
+                            textCode: _currentCode,
+                            onEdit: _regenerateCode,
+                          ),
+                          const SizedBox(height: 20),
+                          Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: TextField(
+                              controller: emailController,
+                              decoration: InputDecoration(
+                                labelText: 'Email',
+                                labelStyle: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: TextField(
+                              controller: passwordController,
+                              decoration: InputDecoration(
+                                labelText: 'Password',
+                                labelStyle: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: screenWidth * .03),
+
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff140165),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.2,
+                                vertical: screenHeight * 0.015,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            onPressed: _saveEmailPassword,
+                            child: const Text('حفظ البريد وكلمة المرور'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Center(child: Text("Users list here...")),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

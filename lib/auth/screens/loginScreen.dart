@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:subpay/auth/firebase/firebaseServicesAuth.dart';
 import 'package:subpay/auth/screens/forgetPasswordPage.dart';
-import 'package:subpay/auth/screens/homePage.dart';
 import 'package:subpay/auth/screens/registerScreen.dart';
 import 'package:subpay/auth/widgets/customButton.dart';
 import 'package:subpay/auth/widgets/customText.dart';
 import 'package:subpay/auth/widgets/customTextBox.dart';
 import 'package:subpay/auth/widgets/customTextButton.dart';
+import 'package:subpay/core/users/enterCodeRoom.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -221,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       setState(() => isLoading = false);
 
                       if (success) {
-                        Navigator.pushNamed(context, HomePage.id);
+                        Navigator.pushNamed(context, EnterCodeRoom.id);
                       }
                     },
                     icon: Image.asset('assets/icons/google_icon.png'),
