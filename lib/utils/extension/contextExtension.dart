@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-extension Contextextension on BuildContext {
-  void showSnack({required String message}) {
+extension SnakBarExtension on BuildContext {
+  void showSnackBar({
+    required String message,
+    Color color = const Color(0xff140165),
+  }) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
-        backgroundColor: const Color(0xff140165),
+        backgroundColor: color,
         content: Center(
           child: Text(
             message,

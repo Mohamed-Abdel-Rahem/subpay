@@ -2,17 +2,20 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:subpay/auth/screens/forgetPasswordPage.dart';
-import 'package:subpay/auth/screens/loginScreen.dart';
-import 'package:subpay/auth/screens/registerScreen.dart';
-import 'package:subpay/core/users/choosePaymentMethod.dart';
-import 'package:subpay/core/users/enterCodeRoom.dart';
-import 'package:subpay/core/screens/mainScreenAdmin.dart';
-import 'package:subpay/core/users/vodafoneCash.dart';
+import 'package:subpay/features/auth/screens/forgetPasswordPage.dart';
+import 'package:subpay/features/auth/screens/loginScreen.dart';
+import 'package:subpay/features/auth/screens/registerScreen.dart';
+import 'package:subpay/features/auth/screens/user_profile.dart';
+import 'package:subpay/features/core/payment/requests.dart';
+import 'package:subpay/features/core/payment/choosePaymentMethod.dart';
+import 'package:subpay/features/core/users/enterCodeRoom.dart';
+import 'package:subpay/features/core/admin/mainScreenAdmin.dart';
+import 'package:subpay/features/core/payment/instaPay.dart';
+import 'package:subpay/features/core/payment/digitalWallet.dart';
 import 'package:subpay/generated/l10n.dart';
-import 'package:subpay/auth/screens/homePage.dart';
+import 'package:subpay/features/auth/screens/homePage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:subpay/auth/screens/splashScreen.dart';
+import 'package:subpay/features/auth/screens/splashScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,7 +66,11 @@ class SubPayApp extends StatelessWidget {
         MainScreenAdmin.id: (context) => const MainScreenAdmin(),
         EnterCodeRoom.id: (context) => const EnterCodeRoom(),
         ChoosePaymentMethod.id: (context) => const ChoosePaymentMethod(),
-        VodafoneCashPayment.id: (context) => const VodafoneCashPayment(),
+        DigitalWallet.id: (context) => const DigitalWallet(),
+        InstaPayPayment.id: (context) => const InstaPayPayment(),
+        RequestPayment.id: (context) => const RequestPayment(),
+        UserProfile.id: (context) => const UserProfile(),
+        // CodeReceipt.id: (context) => const CodeReceipt(),
       },
     );
   }

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:subpay/auth/firebase/roomRepository%20.dart';
+import 'package:subpay/services/roomRepository%20.dart';
 import 'package:subpay/model/RoomModel.dart';
 
 class RoomController {
